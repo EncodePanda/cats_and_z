@@ -82,6 +82,8 @@ object CatsApp extends App {
     override def map[A, B](fa: Baz[A])(f: A => B): Baz[B] = Baz(f(fa.name))
   }
 
+  
+
   println(sendMessage(Baz("reksio")))
 
   // https://gist.github.com/larsrh/5500542
@@ -133,5 +135,18 @@ object CatsApp extends App {
   }
 
   println((maybeName |@| maybeBoundry).map(isLong))
+
+  implicit val bazApply = new Apply[Baz] {
+    override def ap[A, B](f: caz.CatsApp.Baz[A => B])(elem: caz.CatsApp.Baz[A]): caz.CatsApp.Baz[B] =
+      Baz(f.name(elem.name))
+
+    override def map[A, B](fa: Baz[A])(f: A => B): Baz[B] = Baz(f(fa.name))
+  } 
+
+  (Baz("a") |@| Baz("b")) map {
+    case (a,b ) =>
+  }
+  
+
 
 }
